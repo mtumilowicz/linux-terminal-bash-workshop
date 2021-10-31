@@ -381,10 +381,17 @@ and passes them on to the operating system
 * aliases
   * aliases go in a .bash_aliases file in your home folder
   * alias getdates="..."
+
 ## workshop
+### terminal
 * tty
     * open two terminals
     * type `tty` in each
     * in terminal1
         * cat < test.txt > /dev/pts/1 // address of terminal2
     * in terminal2 - it should appear
+### bash
+* create 100 dir with 100 files each and put needle.txt somewhere
+  * random: echo ${RANDOM}
+* find that file and move to desktop
+  * using grep
