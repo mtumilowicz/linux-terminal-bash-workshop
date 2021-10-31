@@ -8,6 +8,7 @@
     * https://medium.com/factualopinions/process-substitution-in-bash-739096a2f66d
     * https://www.cyberciti.biz/tips/understanding-unixlinux-file-system-part-i.html
     * https://www.cyberciti.biz/tips/understanding-unixlinux-filesystem-directories.html
+    * https://www.cyberciti.biz/tips/understanding-unixlinux-filesystem-inodes.html
     * https://www.cyberciti.biz/tips/description-of-linux-file-system-directories.html
     * https://www.cyberciti.biz/tips/understanding-unixlinux-symbolic-soft-and-hard-links.html
 
@@ -15,6 +16,58 @@
 * goals of this workshops
 
 ## linux filesystem
+* What is a file in Linux or Unix?
+    * A file is a collection of data items stored on disk
+* Files are always associated with devices like hard disk, floppy disk, USB pen drive and more
+* A file is the last object in your file system tree
+* A directory is a group of files
+    * Root directory – Strictly speaking, there is only one root directory in your Linux and Unix-like system, which is denoted by / (forward slash). It is root of your entire file system and can not be renamed or deleted.
+    * Sub directory – Directory under root (/) directory is subdirectory which can be created, renamed by the user.
+    * Inside every directory, you will find out two sub-directories named
+        * . (single period) – The current directory
+        * .. (double period) – The pointer to previous directory i.e. the directory immediately above the one I am in now. The ‘..‘ appears in every directory except for the root directory. The ‘..‘ always points to the same inode as ‘.‘
+    * typical Linux system has the following directories
+        * / : This is the root directory.
+        * /bin : This directory contains executable programs which are needed in single user mode and to bring the system up or repair it.
+        *  /dev : Special or device files, which refer to physical devices such as hard disk, keyboard, monitor, mouse and modem etc
+        * /etc : Contains configuration files which are local to the machine. Some larger software packages, like Apache, can have their own subdirectories below /etc i.e. /etc/httpd. Some important subdirectories in /etc:
+            * /etc/cron.* : cron daemon configuration files which is used to execute scheduled commands
+        * /home : Your sweet home to store data and other files. However in large installation yhe structure of /home directory depends on local administration decisions.
+        *  /lib : This directory should hold those shared libraries that are necessary to boot the system and to run the commands in the root filesystem.
+        * /opt : This directory should contain add-on packages such as install download firefox or static files
+        *  /root : This directory is usually the home directory for the root user.
+        * /tmp : This directory contains temporary files which may be deleted with no notice, such as by a regular job or at system boot up.
+* Each object in the filesystem is represented by an inode
+    * Each and every file under Linux (and UNIX) has following attributes:
+        => File type (executable, block special etc)
+        => Permissions (read, write etc)
+        => Owner
+        => etc...
+    * All the above information stored in an inode
+    * Each inode is identified by a unique inode number within the file system. Inode is also know as index number.
+    * You can use ls -i command to see inode number of file
+* inodes are associated with precisely one directory entry at a time
+    * However, with hard links, it is possible to associate multiple directory entries with a single inode
+    * To create a hard link use the ln command as follows
+    * A symbolic path indicating the abstract location of another file. It is like a shortcut in Microsoft Windows operating system.
+    * Hard links: The specific location of physical data. It an essentially a label or name assigned to a file.
+* drwxr-xr-x
+    * group 1 : d
+        * -	Regular file.
+        * d	Directory.
+        * l	Symbolic link.
+        * s	Socket.
+    * group 2 : rwx
+        * owner permissions
+        * r : Read only file permission
+        * w : Write only file permission
+        * x : Execute only file permission
+        * – : No permission
+    * group 3 : r-x
+        * group permissions
+    * group 4 : r-x
+        * other permissions
+
 * nearly everything is file
 * follows a tree pattern
 * everything can be traced back to the / directory
