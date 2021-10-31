@@ -6,9 +6,26 @@
     * https://www.udemy.com/course/bash-mastery/
     * https://www.udemy.com/course/advance-unix-commands
     * https://medium.com/factualopinions/process-substitution-in-bash-739096a2f66d
+    * https://www.cyberciti.biz/tips/understanding-unixlinux-file-system-part-i.html
+    * https://www.cyberciti.biz/tips/understanding-unixlinux-filesystem-directories.html
+    * https://www.cyberciti.biz/tips/description-of-linux-file-system-directories.html
+    * https://www.cyberciti.biz/tips/understanding-unixlinux-symbolic-soft-and-hard-links.html
 
 ## preface
 * goals of this workshops
+
+## linux filesystem
+* nearly everything is file
+* follows a tree pattern
+* everything can be traced back to the / directory
+* /home stores home directories for all regular users on the system
+* /root is the home directory for the root user
+* terminal: user@computerName:~$
+  * `~` shortcut for current user home directory
+  * tilde expansion
+    * echo ~username -> /home/username
+      * check if username is valid, if yes - convert to user's home directory
+    * echo ~root -> /root
 
 ## terminal
 * commands are just text you type in the terminal
