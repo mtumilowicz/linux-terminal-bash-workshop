@@ -11,76 +11,78 @@
     * https://www.cyberciti.biz/tips/understanding-unixlinux-filesystem-inodes.html
     * https://www.cyberciti.biz/tips/description-of-linux-file-system-directories.html
     * https://www.cyberciti.biz/tips/understanding-unixlinux-symbolic-soft-and-hard-links.html
+    * https://www.interserver.net/tips/kb/linux-binary-directories-explained/
+    * https://www.javatpoint.com/linux-home-directory
+    * https://www.bluematador.com/blog/what-is-an-inode-and-what-are-they-used-for
+    * https://medium.com/@307/hard-links-and-symbolic-links-a-comparison-7f2b56864cdd
+    * https://askubuntu.com/questions/108771/what-is-the-difference-between-a-hard-link-and-a-symbolic-link
 
 ## preface
 * goals of this workshops
 
 ## linux filesystem
-* What is a file in Linux or Unix?
-    * A file is a collection of data items stored on disk
-* Files are always associated with devices like hard disk, floppy disk, USB pen drive and more
-* A file is the last object in your file system tree
-* A directory is a group of files
-    * Root directory – Strictly speaking, there is only one root directory in your Linux and Unix-like system, which is denoted by / (forward slash). It is root of your entire file system and can not be renamed or deleted.
-    * Sub directory – Directory under root (/) directory is subdirectory which can be created, renamed by the user.
-    * Inside every directory, you will find out two sub-directories named
-        * . (single period) – The current directory
-        * .. (double period) – The pointer to previous directory i.e. the directory immediately above the one I am in now. The ‘..‘ appears in every directory except for the root directory. The ‘..‘ always points to the same inode as ‘.‘
-    * typical Linux system has the following directories
-        * / : This is the root directory.
-        * /bin : This directory contains executable programs which are needed in single user mode and to bring the system up or repair it.
-        *  /dev : Special or device files, which refer to physical devices such as hard disk, keyboard, monitor, mouse and modem etc
-        * /etc : Contains configuration files which are local to the machine. Some larger software packages, like Apache, can have their own subdirectories below /etc i.e. /etc/httpd. Some important subdirectories in /etc:
-            * /etc/cron.* : cron daemon configuration files which is used to execute scheduled commands
-        * /home : Your sweet home to store data and other files. However in large installation yhe structure of /home directory depends on local administration decisions.
-        *  /lib : This directory should hold those shared libraries that are necessary to boot the system and to run the commands in the root filesystem.
-        * /opt : This directory should contain add-on packages such as install download firefox or static files
-        *  /root : This directory is usually the home directory for the root user.
-        * /tmp : This directory contains temporary files which may be deleted with no notice, such as by a regular job or at system boot up.
-* Each object in the filesystem is represented by an inode
-    * Each and every file under Linux (and UNIX) has following attributes:
-        => File type (executable, block special etc)
-        => Permissions (read, write etc)
-        => Owner
-        => etc...
-    * All the above information stored in an inode
-    * Each inode is identified by a unique inode number within the file system. Inode is also know as index number.
-    * You can use ls -i command to see inode number of file
-* inodes are associated with precisely one directory entry at a time
-    * However, with hard links, it is possible to associate multiple directory entries with a single inode
-    * To create a hard link use the ln command as follows
-    * A symbolic path indicating the abstract location of another file. It is like a shortcut in Microsoft Windows operating system.
-    * Hard links: The specific location of physical data. It an essentially a label or name assigned to a file.
-* drwxr-xr-x
-    * group 1 : d
-        * -	Regular file.
-        * d	Directory.
-        * l	Symbolic link.
-        * s	Socket.
-    * group 2 : rwx
-        * owner permissions
-        * r : Read only file permission
-        * w : Write only file permission
-        * x : Execute only file permission
-        * – : No permission
-    * group 3 : r-x
-        * group permissions
-    * group 4 : r-x
-        * other permissions
+* file is a collection of data items stored on disk
+    * is always associated with devices like hard disk, floppy disk, USB pen drive and more
+    * inode
+        * is a file data structure that stores information about any file except its name and data
+        * stores the file’s metadata, including all the storage blocks on which the file’s data can be found
+            * if you save a file that exceeds a standard block, your computer will find the next available segment
+            on which to store the rest of your file
+                * over time, that can get super confusing
+* directory is a group of files
+    * two types
+        * root directory
+            * only one root directory
+            * denoted by `/`
+            * root of your entire file system tree
+        * sub directory
+            * directory under root
+    * inside every directory, you will find out two default sub-directories
+        * `.` – current directory
+        * `..` – pointer to previous directory
+            * directory immediately above the current one I am in now
+    * some typical directories
+        * `/` - root directory
+        * `/bin` - executable programs which are needed in single user mode
+            * contains common commands like cat, cp, cd, ls, etc.
+        * `/dev` - files, which refer to physical devices such as hard disk, keyboard, monitor, mouse and modem etc
+        * `/etc`- all your system configuration files in it
+        * `/home` - for a particular user of the system and consists of individual files
+        * `/lib` - hold shared libraries that are necessary to boot the system and to run the commands
+        * `/opt` - contains packages not part of the Operating System distribution, but provided by an independent source
+        * `/root` - home directory for the root user
+        * `/tmp` - temporary files which may be deleted with no notice
+* permissions
+    * four groups X(XXX)(XXX)(XXX)
+        * example: drwxr-xr-x
+    * group 1: type
+        * `-`: regular file
+        * `d`: directory
+        * `l`: symbolic link
+        * `s`: socket
+    * group 2: owner permissions
+        * `r`: read only file permission
+        * `w`: write only file permission
+        * `x`: execute only file permission
+        * `–`: no permission
+    * group 3: group permissions
+    * group 4: other permissions
+* symbolic link vs hard link
+    * symbolic link
+        * shortcut that reference to a file instead of its inode value
+        * like a shortcut in Windows
+        * can be seen as a static link to the last known location of the original file
+    * hard links
+        * direct reference to a file via its inode
+        * only files and not directories
 
-* nearly everything is file
-* follows a tree pattern
-* everything can be traced back to the / directory
-* /home stores home directories for all regular users on the system
-* /root is the home directory for the root user
+## terminal
 * terminal: user@computerName:~$
   * `~` shortcut for current user home directory
   * tilde expansion
     * echo ~username -> /home/username
       * check if username is valid, if yes - convert to user's home directory
     * echo ~root -> /root
-
-## terminal
 * commands are just text you type in the terminal
 * commands are interpreted by the shell
 * shell is a program that interprets the commands you type in your terminal
@@ -453,6 +455,45 @@ and passes them on to the operating system
   * alias getdates="..."
 
 ## workshop
+### filesystem
+1. Create two files:
+
+   $ touch blah1
+   $ touch blah2
+1. Enter some data into them:
+
+   $ echo "Cat" > blah1
+   $ echo "Dog" > blah2
+1. And as expected:
+
+   $cat blah1; cat blah2
+   Cat
+   Dog
+1. Let's create hard and soft links:
+
+   $ ln blah1 blah1-hard
+   $ ln -s blah2 blah2-soft
+1. Let's see what just happened:
+
+   $ ls -l
+
+   blah1
+   blah1-hard
+   blah2
+   blah2-soft -> blah2
+1. Changing the name of blah1 does not matter:
+
+   $ mv blah1 blah1-new
+   $ cat blah1-hard
+   Cat
+1. blah1-hard points to the inode, the contents, of the file - that wasn't changed.
+
+   $ mv blah2 blah2-new
+   $ ls blah2-soft
+   blah2-soft
+   $ cat blah2-soft
+   cat: blah2-soft: No such file or directory
+1. Similarly, If blah1 is deleted, blah1-hard still holds the contents; if blah2 is deleted, blah2-soft is just a link to a non-existing file.
 ### terminal
 * tty
     * open two terminals
