@@ -107,32 +107,32 @@
 * suggestions: double tap TAB
 
 ### data streams
-* data streams
-  * standard input
-  * standard output
-  * standard error
-  * data streams can be redirected from their default locations to wherever you wish
-  * you can redirect the standard output of one commands to the standard input of another
-    in a process known as piping
-* How many ways in total are there to get data into and out of a command?
-  * standard input (2): cmd arguments and standard
-  * standard output (2): error and standard
-  * What is Standard Output Connected to By Default?
-    * terminal
-  * What is the Standard Input Data Stream Connected to by default?
-    * the keybord
-* cat 1> output.txt
-  * standard input: 0
-  * standard output: 1
-    * shortcut: cat > output.txt
-      * by default removes everything from the file before writing
-      * appends: cat >> output.txt
-  * standard error: 2
-    * cat -k bla 2>> error.txt
-    * no error in terminal
-  * program &>> result.txt
-    * Redirect and append both stdout and stderr to file result.txt
-  * discard stdout: > /dev/null
+* types
+    * standard input
+    * standard output
+    * standard error
+* redirections
+    * data streams can be redirected from their default locations to wherever you wish
+    * piping: redirecting the standard output of one commands to the standard input of another
+    * example
+        * standard input: 0
+            * `wc -l < test.txt`
+        * standard output: 1
+            * discard stdout: `> /dev/null` // or `1> /dev/null` > is just a shortcut
+                * `/dev/null` is known as the null device
+                * whatever you write to `/dev/null` will be discarded
+        * standard error: 2
+            * `cat -k bla 2>> error.txt` // k not existing option
+            * no error in terminal
+        * `&>> result.txt`
+            * redirect and append both stdout and stderr to file result.txt
+* ways to get data into and out of a command
+    * standard input (2)
+        * cmd arguments and standard
+    * standard output (2)
+        * error and standard
+    * standard output is connected by default to terminal
+    * standard input is connected by default to the keybord
 
 ### commands
 * history - list history of commands
