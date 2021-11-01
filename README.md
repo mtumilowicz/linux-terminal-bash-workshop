@@ -79,46 +79,29 @@
 ## terminal
 * terminal: user@computerName:~$
   * `~` shortcut for current user home directory
-  * tilde expansion
-    * echo ~username -> /home/username
-      * check if username is valid, if yes - convert to user's home directory
-    * echo ~root -> /root
 * commands are just text you type in the terminal
 * commands are interpreted by the shell
-* shell is a program that interprets the commands you type in your terminal
-and passes them on to the operating system
-  * the purpose of the shell is to make it more convenient
-  for you to issue commands to your computer
-  * the terminal is the window to the shell
+    * shell - program that interprets the commands and passes them on to the operating system
+* the terminal is the window to the shell
 * commands structure
-  * commandName options inputs
-  * echo $PATH
-    * in what directories the shell will search for a specific command
-    * example: which echo
-      * type -a echo
-        * echo is a shell builtin
-        * echo is /usr/bin/echo
-          * /usr/bin/echo 'Hello' or echo 'Hello'
-    * that's how the shell knows where to find your commands
-    * commandNames need to be on the shell's search path
-  * chaining options
-    * date -a -b -c -d -e -f -g
-    * same as: date -abcdefg
-    * option names
-      * long: date --universal
-      * short: date -u
-  * there can be input for options
-    * cal -A 1 12 2017
-      * cal (-A 1) 12 2017: 1 is input for A option
-      * cal -A=1 -B=1 12 2017
+    * commandName options inputs
+    * `echo $PATH`
+        * in what directories the shell will search for a specific command
+        * example: `which echo`
+            * echo is /usr/bin/echo
+            * you could type /usr/bin/echo 'Hello' or echo 'Hello'
+            * type -a echo
+                * echo is a shell builtin
+        * that's how the shell knows where to find your commands
+        * commandNames need to be on the shell's search path
+    * there can be input for options
+        * `cal -A 1 12 2017`
+          * `cal (-A 1) 12 2017`: 1 is input for A option
+          * `cal -A=1 -B=1 12 2017`
 * open: ctrl alt t
 * close: ctrl d
-* terminal: user@computerName:~$
+* terminal: `user@computerName:~$`
   * `~` shortcut for current user home directory
-  * tilde expansion
-    * echo ~username -> /home/username
-      * check if username is valid, if yes - convert to user's home directory
-    * echo ~root -> /root
 * search in history
     * ctrl r
 * suggestions: double tap TAB
