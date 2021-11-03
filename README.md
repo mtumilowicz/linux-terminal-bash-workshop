@@ -267,15 +267,13 @@
 * xargs
     * converts input from standard input into arguments to a command
     * cat file | xargs echo // vs echo file
-* sed
-    * sed 's/search-pattern/replacement-string/flags' doc
-    * replaces toReplace -> Replace
+* sed sed 's/search-pattern/replacement-string/flags' file
     * sed 's/a/b/' 'a'
-      * -> 'b'
+      * result: 'b'
     * doesn't modify the original file
-    * replace only first occurence
-      * set/a/b/g
-      * use g flag
+    * replace only first occurrence
+    * g flag
+        * replace all
   * awk
     * operations
       1. scans a file line by line
