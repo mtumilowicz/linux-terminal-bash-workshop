@@ -280,37 +280,20 @@
         * sed -n '3p' file // 3rd row
         * sed -n '2,4p' file // range of lines
 * awk
-  * operations
-    1. scans a file line by line
-    2. splits each input line into fields
-    3. compares input line/fields to pattern
-    4. performs action(s) on matched lines
-  * used for
-    * transform (processing, manipulating, formatting) data files
-    * searching
-    * produce reports
-  * fetch column from space separated file
-    * fetch any specific column data and print
-      * awk '{print $1}' file
-        * you could use printf
-      * awk '{print $1 "," $2}' file
-      * awk -F '.' '{print $1 "," $2}' file // separator
-      * without first line: command | tail -n +2
-      * awk 'NR>=122 && NR<=129 { print }' // for row numbers
-      * awk '$1>5 { print }' // filtering by column
-      * awk '/gmail.com/{ print }' // fetch the row if gmail.com appears anywhere in the row
-      * awk '!/gmail.com/{ print }' // fetch the row not if gmail.com appears anywhere in the row
-      * awk '$5~"Co"{ print }' // if 5 column starts with
-      * awk '$5~/e/{ print }' // contains e somewhere
-      * awk '$5~/^A/ && $5~/n$/ { print }' // contains e somewhere
-      * awk '{ if ($3 > 200) print $0;}' // contains e somewhere
-      * awk 'BEGIN{print "XXX"}END{"YYY"}' // prints XXX at the beginning then actions then YYY
-      * awk 'BEGIN{count=0}{count=count+1}END{"YYY"}' // declaring variable
-    * replace
-      * sub - only 1 occurrence
-      * gsub(oldValue, newValue, column) - all occurrences
-  * storing in a variable
-    * a=awk ...
+    * operations
+        1. scans a file line by line
+        2. splits each input line into fields
+        3. compares line/fields to pattern
+        4. performs action(s) on matched lines
+    * used for
+        * transform (processing, manipulating, formatting) data files
+        * searching
+        * produce reports
+    * awk '{print $1}' file
+    * awk '{print $1 "," $2}' file
+    * awk -F '.' '{print $1 "," $2}' file // separator
+    * awk 'NR>=122 && NR<=129 { print }' // for row numbers
+    * awk '$1>5 { print }' // filtering by column
 * sed vs awk
     * sed is used to process and modify text, awk is used for analysis and reporting
 
@@ -318,11 +301,8 @@
 ## bash
 * bash = most commonly used linux shell today
 * what is script
-  * a shell script is a file containing commands for the shell
-* different shells can interpret same text different ways
-* aliases
-  * aliases go in a .bash_aliases file in your home folder
-  * alias getdates="..."
+    * a shell script is a file containing commands for the shell
+    * different shells can interpret same text different ways
 
 ## workshop
 ### filesystem
