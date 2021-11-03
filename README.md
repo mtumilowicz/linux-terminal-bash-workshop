@@ -297,7 +297,6 @@
 * sed vs awk
     * sed is used to process and modify text, awk is used for analysis and reporting
 
-
 ## bash
 * bash = most commonly used linux shell today
 * what is script
@@ -353,6 +352,4 @@
     * in terminal2 - it should appear
 ### bash
 * create 100 dir with 100 files each and put needle.txt somewhere
-  * random: echo ${RANDOM}
 * find that file and move to desktop
-  * using grep
