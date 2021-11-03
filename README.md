@@ -308,6 +308,7 @@
     * different shells can interpret same text different ways
 
 ## workshop
+
 ### filesystem
 1. Create two files:
    $ touch blah1
@@ -339,6 +340,7 @@
    $ cat blah2-soft
    cat: blah2-soft: No such file or directory
 1. Similarly, If blah1 is deleted, blah1-hard still holds the contents; if blah2 is deleted, blah2-soft is just a link to a non-existing file.
+
 ### terminal
 * task1
     * tty
@@ -355,6 +357,17 @@
         * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print }'
     * find row number for that id, that has more than one TRACE entry
         * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print $2 }' | grep -f - -n sample.log
+
 ### bash
 * create 100 dir with 100 files each and put needle.txt somewhere
-* find that file and move to desktop
+    * mkdir directory{1..100}
+        * verify count dir: find . -maxdepth 1 | wc -l
+    * touch directory{1..100}/file{1..100}.txt
+        * verify count dir: find . -mindepth 2 | wc -l
+    * create needle.txt somewhere in dirs
+        * touch directory$(shuf -i 1-100 -n 1)/needle.txt
+        * verify that exists find . -name needle.txt
+    * rm -r directory{1..100}
+* find that file and move to from its dir to parent dir (files)
+    * find . -type f -name "needle.txt" -exec mv {} . \;
+    * verify that it was moved find . -name needle.txt
