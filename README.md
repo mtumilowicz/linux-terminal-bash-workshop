@@ -17,6 +17,8 @@
     * https://medium.com/@307/hard-links-and-symbolic-links-a-comparison-7f2b56864cdd
     * https://askubuntu.com/questions/108771/what-is-the-difference-between-a-hard-link-and-a-symbolic-link
     * https://stackoverflow.com/questions/5607542/why-does-find-exec-mv-target-not-work/5607677
+    * https://www.microsoft.com/en-us/download/details.aspx?id=37003
+    * https://unix.stackexchange.com/questions/85461/piping-search-term-not-filename-to-grep
 
 ## preface
 * goals of this workshops
@@ -248,7 +250,9 @@
         * set delimiter to `:` // default is blank spaces
 * grep textToSearch file
     * used for searching plain-text data sets for lines that match a regular expression
-    * grep -v textToSearch hello.txt // dont have textToSearch
+    * grep -v textToSearch fileToSearchIn // line that does not have textToSearch
+    * grep -f - fileToSearchIn
+        * -f tells grep to obtain its search pattern from a file and - tells it that this file is actually stdin
 * tar
     * create, extract, or list files from a tar file
     * tar -cvf filename.tar file[1..3].txt
@@ -306,37 +310,29 @@
 ## workshop
 ### filesystem
 1. Create two files:
-
    $ touch blah1
    $ touch blah2
 1. Enter some data into them:
-
    $ echo "Cat" > blah1
    $ echo "Dog" > blah2
 1. And as expected:
-
    $cat blah1; cat blah2
    Cat
    Dog
 1. Let's create hard and soft links:
-
    $ ln blah1 blah1-hard
    $ ln -s blah2 blah2-soft
 1. Let's see what just happened:
-
    $ ls -l
-
    blah1
    blah1-hard
    blah2
    blah2-soft -> blah2
 1. Changing the name of blah1 does not matter:
-
    $ mv blah1 blah1-new
    $ cat blah1-hard
    Cat
 1. blah1-hard points to the inode, the contents, of the file - that wasn't changed.
-
    $ mv blah2 blah2-new
    $ ls blah2-soft
    blah2-soft
@@ -344,12 +340,21 @@
    cat: blah2-soft: No such file or directory
 1. Similarly, If blah1 is deleted, blah1-hard still holds the contents; if blah2 is deleted, blah2-soft is just a link to a non-existing file.
 ### terminal
-* tty
-    * open two terminals
-    * type `tty` in each
-    * in terminal1
-        * cat < test.txt > /dev/pts/1 // address of terminal2
-    * in terminal2 - it should appear
+* task1
+    * tty
+        * open two terminals
+        * type `tty` in each
+        * in terminal1
+            * cat < test.txt > /dev/pts/1 // address of terminal2
+        * in terminal2 - it should appear
+* task2
+    * analyze files/sample.log
+    * how many FATAL logs
+        * grep ERROR sample.log
+    * find if for any id there is more than one TRACE entry
+        * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print }'
+    * find row number for that id, that has more than one TRACE entry
+        * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print $2 }' | grep -f - -n sample.log
 ### bash
 * create 100 dir with 100 files each and put needle.txt somewhere
 * find that file and move to desktop
