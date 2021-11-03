@@ -267,65 +267,53 @@
 * xargs
     * converts input from standard input into arguments to a command
     * cat file | xargs echo // vs echo file
-* sed sed 's/search-pattern/replacement-string/flags' file
-    * sed 's/a/b/' 'a'
-      * result: 'b'
-    * doesn't modify the original file
-    * replace only first occurrence
-    * g flag
-        * replace all
-  * awk
-    * operations
-      1. scans a file line by line
-      2. splits each input line into fields
-      3. compares input line/fields to pattern
-      4. performs action(s) on matched lines
-    * used for
-      * transform (processing, manipulating, formatting) data files
-      * searching
-      * produce reports
-    * fetch column from space separated file
-      * fetch any specific column data and print
-        * awk '{print $1}' file
-          * you could use printf
-        * awk '{print $1 "," $2}' file
-        * awk -F '.' '{print $1 "," $2}' file // separator
-        * without first line: command | tail -n +2
-        * awk 'NR>=122 && NR<=129 { print }' // for row numbers
-        * awk '$1>5 { print }' // filtering by column
-        * awk '/gmail.com/{ print }' // fetch the row if gmail.com appears anywhere in the row
-        * awk '!/gmail.com/{ print }' // fetch the row not if gmail.com appears anywhere in the row
-        * awk '$5~"Co"{ print }' // if 5 column starts with
-        * awk '$5~/e/{ print }' // contains e somewhere
-        * awk '$5~/^A/ && $5~/n$/ { print }' // contains e somewhere
-        * awk '{ if ($3 > 200) print $0;}' // contains e somewhere
-        * awk 'BEGIN{print "XXX"}END{"YYY"}' // prints XXX at the beginning then actions then YYY
-        * awk 'BEGIN{count=0}{count=count+1}END{"YYY"}' // declaring variable
-      * replace
-        * sub - only 1 occurrence
-        * gsub(oldValue, newValue, column) - all occurrences
-    * storing in a variable
-      * a=awk ...
-  * SED - stream editor
+* sed 's/search-pattern/replacement-string/flags' file
     * display and edit data
-    * options: insert / add / delete
-    * display specific line
-      * sed -n '3p' file // 3rd row
-      * sed -n '$p' file // last line
-      * sed -n '2,4p' file // range of lines
-    * search
-      * sed -n '/Amit/p' file
+    * edit
+        * sed 's/a/b/' 'a'
+          * result: 'b'
+        * doesn't modify the original file
+        * replace only first occurrence
+        * g flag
+            * replace all
+    * display
+        * sed -n '3p' file // 3rd row
+        * sed -n '2,4p' file // range of lines
+* awk
+  * operations
+    1. scans a file line by line
+    2. splits each input line into fields
+    3. compares input line/fields to pattern
+    4. performs action(s) on matched lines
+  * used for
+    * transform (processing, manipulating, formatting) data files
+    * searching
+    * produce reports
+  * fetch column from space separated file
+    * fetch any specific column data and print
+      * awk '{print $1}' file
+        * you could use printf
+      * awk '{print $1 "," $2}' file
+      * awk -F '.' '{print $1 "," $2}' file // separator
+      * without first line: command | tail -n +2
+      * awk 'NR>=122 && NR<=129 { print }' // for row numbers
+      * awk '$1>5 { print }' // filtering by column
+      * awk '/gmail.com/{ print }' // fetch the row if gmail.com appears anywhere in the row
+      * awk '!/gmail.com/{ print }' // fetch the row not if gmail.com appears anywhere in the row
+      * awk '$5~"Co"{ print }' // if 5 column starts with
+      * awk '$5~/e/{ print }' // contains e somewhere
+      * awk '$5~/^A/ && $5~/n$/ { print }' // contains e somewhere
+      * awk '{ if ($3 > 200) print $0;}' // contains e somewhere
+      * awk 'BEGIN{print "XXX"}END{"YYY"}' // prints XXX at the beginning then actions then YYY
+      * awk 'BEGIN{count=0}{count=count+1}END{"YYY"}' // declaring variable
     * replace
-      * sed 's/old/new/' file // single data
-      * sed -e 's/old/new/' -e's/old/new/' file
-      * sed '/condition/s/old/new/' file
-    * delete
-      * sed '/data/d' file // deleSte with all with data
-    * add
-      * sed '1 a #This is just a commented line' sedtest.txt
-    * while Sed is used to process and modify text, Awk is mostly used as a tool for analysis and reporting
-    * write to the file
-      * sed -n '/pattern/w targetFile' file
+      * sub - only 1 occurrence
+      * gsub(oldValue, newValue, column) - all occurrences
+  * storing in a variable
+    * a=awk ...
+* sed vs awk
+    * sed is used to process and modify text, awk is used for analysis and reporting
+
 
 ## bash
 * bash = most commonly used linux shell today
