@@ -16,6 +16,7 @@
     * https://www.bluematador.com/blog/what-is-an-inode-and-what-are-they-used-for
     * https://medium.com/@307/hard-links-and-symbolic-links-a-comparison-7f2b56864cdd
     * https://askubuntu.com/questions/108771/what-is-the-difference-between-a-hard-link-and-a-symbolic-link
+    * https://stackoverflow.com/questions/5607542/why-does-find-exec-mv-target-not-work/5607677
 
 ## preface
 * goals of this workshops
@@ -135,214 +136,137 @@
     * standard input is connected by default to the keybord
 
 ### commands
-* history - list history of commands
+* history
+    * list history of commands
     * then !1 - chose first and executes
     * !! - most recent cmd
     * !v latest cmd that starts with v
     * !. latest cmd that start with .
-* tty
-  * prints the file name of the terminal connected to standard input
 * cut
-  * file: A B C D / E F G H
-  * cut < date.txt --delimiter " " --fields 1
-    * output: A / E
-  * When not specified, the default delimiter is “TAB”.
-  * split only by single character
-  * cut
+    * used to extract sections from each line of input — usually from a file
     * cut -d "." -f1 // delimited by . and only first column
-      * cut -d "." -f1-3 // delimited by . and range
-    * cut c1 file // first char only
-    * cut c1-4 file // fetch only first 4 from a line
-      * cut c5- file // since 5 to the end
-    * --complement - negate
-      * example --complement f1-3 means skip 1-3 columns
-    * -s // skip incorrect data
+        * default delimiter is "TAB"
+        * split only by single character
+    * cut -d "." -f1-3 // delimited by . and range
+    * cut c5- file // since 5 to the end
 * cat
-  * use cases
+    * name derived from its function to concatenate files
     * view content
+        * cat file
     * create new file with content
-      * cat > FileWithContent enter then insert content ctr c
+        * cat > FileWithContent then enter then insert content ctr c
     * copy content of 1 file to another
-      * cat file > file2
-      * cat file1 file2 > file3
-    * copy content of more than 1 file to another
+        * cat file > file2
+        * cat file1 file2 > file3
     * append data
-      * cat file1 >> file2
-  * cat is a standard Unix utility that reads files sequentially, writing them to standard output.
-    * The name is derived from its function to concatenate files.
+        * cat file1 >> file2
 * tee
-  * redirection of stdout breaks pipeline
-    * to save a data snapshot without breaking pipelines use the tree command
-* echo
+    * save a data snapshot without breaking pipeline
+        * redirection of stdout breaks pipeline
+    * find "4DOS" wikipedia.txt | tee 4DOS.txt | sort > 4DOSsorted.txt
+        * searches the file wikipedia.txt for any lines containing the string "4DOS"
+        * makes a copy of the matching lines in 4DOS.txt
+        * sorts the lines
+        * writes them to the output file 4DOSsorted.txt
+* touch filename
+    * create empty file
 * pwd
+    * writes the full pathname of the current working directory
     * $oldpwd - prev directory
     * ~+ for pwd
     * ~- for oldpwd
 * ls
-      * ls -F (shows differences between dirs and files)
+    * list files or directories
+    * ls -F (shows differences between dirs and files)
         * directories: Downloads/
         * files: file.txt - without "/"
-      * ls -a
-        * all stuff even hidden files / directories
-        * always `.` and `..`
-          * cd . - stay where it is
-            * . folder refers to this
-          * cd .. - go to parent folder
-            * .. folder refers to parent folder
+    * ls -a
+        * plus hidden files / directories
 * cd
-  * return to home
-* file tux.png
-  * shows type of the file
-  * if you change the name of the file to xxx.jpg it still prints png
-    * filetype is in the header
-    * in linux file extensions doesn't matter
-    * if you name xxx.blablabla it will load the program to open the file
-    from header (blablabla cannot be find), but if you call it xxx.txt it will
-    make a shortcut and use txt player
+    * change directory
+    * cd dirName
+    * cd
+        * return to home
+* file filename
+    * shows type of the file
+    * if you change the name of the file to xxx.jpg it still prints png
+        * in linux file extensions doesn't matter
 * wildcards
   * `*`
+    * matches zero or more occurrences
     * ls Documents/ Downloads/ Pictures/
-    * ls Do* Pi*
-    * matches all
+        * same as: ls Do* Pi* // assuming that there are only
   * ?
-    * matches 1 place
+    * matches single occurrence
+    * ls file?.txt
   * [123456]
-    * ls file[12345].txt
     * matches 1 place
-    * [1-9]
-    * ls file[1-9][1-9]
-  * https://tldp.org/LDP/GNU-Linux-Tools-Summary/html/x11655.htm
-  * http://www.linfo.org/wildcard.html
-  * cd /var/www
-    * for FILE in *.html
-    * for FILE in /var/www/*.html
-* creating files and directories
-  * touch file1
-    * create empty file
-  * mkdir folder
+    * ls file[12345].txt
+* mkdir folder
     * create folder
-    * mkdir a/b/c - cannot create
-      * mkdir -p /a/b/c - create whole path even if dir doesn't exist
-    * mkdir {a,b,c,d,e,f}_{1,2,3}
-      * mkdir {a,b,c,d,e,f}_{1..3}
-      * brace expansion
-      * touch {a,b,c,d,e,f}_{1..3}/file{1..100}
-        * create in each directory a file
-    * ls {a,b,c,d,e,f}_{1..3}
-* deleting
-  * rm
+    * mkdir -p /a/b/c
+        * create whole path even if dir doesn't exist
+        * mkdir a/b/c - error
+* rm
     * remove file
-  * rm -r
+* rm -r
     * remove directory
-    * rm -ri
-      * asks interactively if delete each file
-  * rmdir
-    * removes if empty
-* copying
-  * cp sourceFile targetFile
-  * cp sourceFile targetFile targetDir
-  * cp destination/* .
-    * to this folder
-    * . means current folder
-  * cp destination/* ..
-    * to parent folder
-  * cp -r source target
-    * for copying dirs
-* renaming and moving (mv)
-  * mv oldName newName
-    * works for dirs
-  * mv oldFolder/* .
-  * mv oldFolder ./newfolder
-    * moves all from oldFolder to newfolder
-  * search for files (locate)
-    * https://osxdaily.com/2011/11/02/enable-and-use-the-locate-command-in-the-mac-os-x-terminal/
-    * locate *.log
-    * locate -S
-      * database info
-    * updatedb
-      * sudo updatedb (to run as an root)
+    * rmdir - removes if empty
+* cp source target
+    * used for copying files and directories to another location
+    * cp a.txt b.txt
+    * cp -r source target
+        * for copying dirs
+* mv source target // for files and directories
+    * moves files or directories from one place to another
+    * mv foo.txt bar.txt
+        * rename foo.txt to bar.txt
+    * mv file1.txt file.2.txt file3.txt folder
+* locate *.log
+    * search for files
+        * doesn't read the file system for the searched file or directory name
+        * refers to a database (prepared by the command updatedb)
+    * very fast but requires updating
+        * updatedb
+            * sudo updatedb (to run as an root)
         * sudo - super user do
-      * very fast but requires updating
-      * add --existing and -follow options
-      * best thing to do is just update the database (done automatically daily)
-  * sophisticated search tasks (find)
-    * find
-      * list all files, unlimited depth
-      * doesn't use database
-    * find . -maxdepth 1
-    * find . -maxdepth 1 -type d // directory
-    * find . -maxdepth 1 -type f // file
-    * find . -name "5.txt"
-      * find . -name "*.txt"
-      * find . -iname "*.txt" // case insensitive
-    * find / -type f -size +100k // more than 100 kb
-    * find / -type f -size +100k -size -5M // more than 100 kb and less than 5 mb
-    * find / -type f -size +100k | wc -l
-      * count
-    * find / -type f -size +100k -size -5M -exec {} target \;
-      * copy all files into directory
-    * find / -type f -size +100k -size -5M -ok {} target \;
-      * asks every time
-    * find haystack/ -type f -name "needle.txt" -exec mv what where \;
-  * view
-    * cat - shortcut for concatenate
-      * cat file1.txt // print to standard outuput
-      * cat file1.txt file2.txt file3.txt // concatenates all files
-      * cat file[1-5].txt
-    * tac - reverse of cat
-      * reads all file from the end but does not affect text on any line
-      * flips upside down
-    * rev - reverse lines
-      * cat ... | rev
-    * less file
-      * cat file | less
-      * scroll line by line
-    * cat file | head
-      * show by default 10
-      * cat file | head -n 2
-    * cat file | tail
-  * sort
-    * sort words.txt
-    * sort -r words.txt
-      * sort words.txt | tac
-    * sort -n numbers.txt // sort by whole number not lexicographical
+        * done automatically daily
+* find haystack/ -type f -name "needle.txt" -exec command {} \;
+    * used to find files and directories and perform subsequent operations on them
+    * for each result, command {} is executed
+        * all occurences of {} are replaced by the filename
+* less file
+    * displays the contents of a file or a command output, one page at a time
+* head/tail file
+    * display the beginning of a text file or piped data
+* sort words.txt
+    * sort -r words.txt // sort words.txt | tac
+    * sort -n numbers.txt // sort by number not lexicographical
     * sort -u number.txt // unique
-    * ls -l /etc | head -n 20 | sort -k 5nr // by 5th column by number and reverse
-      * ls -lh /etc | head -n 20 | sort -k 5hr // by 5th column by human readable data and reverse
-      * ls -lh /etc | head -n 20 | sort -k 5Mr // by 5th column by month and reverse
-  * searching file content
-    * grep textToSearch file // find all lines containing e
-    * grep -c e hello.txt // how many lines containing e
-    * grep -i e hello.txt // case insensitive
-    * grep -v e hello.txt // dont have e
-    * ls hello/ | grep hello.txt
-  * archiving
+    * sort -k 2 employee.txt
+    * sort -t : -k 2n employee.txt
+        * set delimiter to `:` // default is blank spaces
+* grep textToSearch file
+    * used for searching plain-text data sets for lines that match a regular expression
+    * grep -v textToSearch hello.txt // dont have textToSearch
+* tar
+    * create, extract, or list files from a tar file
     * tar -cvf filename.tar file[1..3].txt
-      * c – create an archive file
-      * v – show the progress of the archive file
-      * f – filename of the archive file
-    * file ourarchive.tar
-      * checks if it's a tarball
-    * tar -tf ourarchive.tar
-      * t – viewing the content of the archive file
+        * c – create an archive file
+        * v – show the progress of the archive file
+        * f – filename of the archive file
+        * t – viewing the content of the archive file
     * tar -xvf ourarchive.tar
-      * x - extract
-  * compression
-    * gzip
-      * gzip ourarchive.tar // compressed in place
-      * gunzip ourarchive.tar // uncompress in place
-    * bzip2
-    * zip archive.zip file[1..3].txt
-      * unzip ...
-    * tar -cvzf archive.tar.gz ... // z - gzip
-      * tar -xvzf archive.tar.gz // extract gzip
-    * tar -cvjf archive.tar.bz2 ... // z - bzip2
-      * tar -xjzf ... // extract
-  * xargs
+        * x - extract
+    * compression
+        * gzip
+            * gzip ourarchive.tar // compressed in place
+            * gunzip ourarchive.tar // uncompress in place
+            * tar -cvzf archive.tar.gz ... // z - gzip
+            * tar -xvzf archive.tar.gz // extract gzip
+* xargs
     * converts input from standard input into arguments to a command
-    * date | xargs echo
-      * print current date
-    * cat filestodelete.txt | xargs rm
+    * cat file | xargs echo // vs echo file
 * sed
     * sed 's/search-pattern/replacement-string/flags' doc
     * replaces toReplace -> Replace
@@ -404,29 +328,6 @@
     * while Sed is used to process and modify text, Awk is mostly used as a tool for analysis and reporting
     * write to the file
       * sed -n '/pattern/w targetFile' file
-* grep
-  * grep -i wordToSeach file
-  * grep -i -v wordToExclude file
-  * grep -c // count
-  * grep -n // line number
-  * grep -B 1 // display line before
-  * grep -A 1 // display line after
-  * grep -C 5 // preceding and following rows
-  * grep -l // show file name
-  * grep -v // without text
-  * grep -w // exact word
-  * grep -e text1 -e text2 // multiple words
-  * grep toSearch "." // in the current location
-  * egrep - extended grep
-* cut
-  * cut -d "." -f1 // delimited by . and only first column
-    * cut -d "." -f1-3 // delimited by . and range
-  * cut c1 file // first char only
-  * cut c1-4 file // fetch only first 4 from a line
-    * cut c5- file // since 5 to the end
-  * --complement - negate
-    * example --complement f1-3 means skip 1-3 columns
-  * -s // skip incorrect data
 
 ## bash
 * bash = most commonly used linux shell today
