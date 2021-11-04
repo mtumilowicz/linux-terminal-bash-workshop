@@ -1,3 +1,4 @@
+### filesystem
 1. filesystem task
     1. create two files:
        touch file1
@@ -38,7 +39,14 @@
         cat: file2-soft: No such file or directory
 
 ### terminal
-* task1
+1. redirect from terminal to terminal
+    1. open two terminals
+        * ctrl t
+    1. type `tty` in each
+    1. create file test.txt
+        * touch test.txt
+    1. add content to the file
+        * echo "Cat" > file1
     * tty
         * open two terminals
         * type `tty` in each
