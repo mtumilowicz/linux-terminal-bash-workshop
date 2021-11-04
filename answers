@@ -1,0 +1,69 @@
+1. filesystem task
+    1. create two files:
+       touch file1
+       touch file2
+    1. enter some data into them
+       echo "Cat" > file1
+       echo "Dog" > file2
+    1. verify the content of the files
+       cat file1; cat file2
+       Cat
+       Dog
+    1. create hard and soft links
+       ln file1 file1-hard
+       ln -s file2 file2-soft
+    1. verify they were created
+       ls -l
+       file1
+       file1-hard
+       file2
+       file2-soft -> file2
+    1. change the name of file1 and verify the hard link
+       mv file1 file1-new
+       cat file1-hard
+       Cat
+    1. change the name of file2 and verify the soft link
+       mv file2 file2-new
+       ls file2-soft
+       file2-soft
+       cat file2-soft
+       cat: file2-soft: No such file or directory
+    1. delete the file1-new and verify the hard link
+        rm file1-new
+        cat file1-hard
+        Cat
+    1. delete the file2 and verify the soft link
+        rm file2-new
+        cat file2-soft
+        cat: file2-soft: No such file or directory
+
+### terminal
+* task1
+    * tty
+        * open two terminals
+        * type `tty` in each
+        * in terminal1
+            * cat < test.txt > /dev/pts/1 // address of terminal2
+        * in terminal2 - it should appear
+* task2
+    * analyze files/sample.log
+    * how many FATAL logs
+        * grep ERROR sample.log
+    * find if for any id there is more than one TRACE entry
+        * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print }'
+    * find row number for that id, that has more than one TRACE entry
+        * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print $2 }' | grep -f - -n sample.log
+
+### bash
+* create 100 dir with 100 files each and put needle.txt somewhere
+    * mkdir directory{1..100}
+        * verify count dir: find . -maxdepth 1 | wc -l
+    * touch directory{1..100}/file{1..100}.txt
+        * verify count dir: find . -mindepth 2 | wc -l
+    * create needle.txt somewhere in dirs
+        * touch directory$(shuf -i 1-100 -n 1)/needle.txt
+        * verify that exists find . -name needle.txt
+    * rm -r directory{1..100}
+* find that file and move to from its dir to parent dir (files)
+    * find . -type f -name "needle.txt" -exec mv {} . \;
+    * verify that it was moved find . -name needle.txt
