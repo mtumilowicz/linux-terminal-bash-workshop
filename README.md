@@ -22,6 +22,16 @@
 
 ## preface
 * goals of this workshops
+    1. introduction to linux filesystem
+        * files
+        * directories
+        * permissions
+        * symbolic links
+        * hard links
+    1. introduction to command line
+        * standard commands with examples
+        * data streams (with redirection)
+    1. workshop tasks are in `workshop` file and the answers are in `answers` file
 
 ## linux filesystem
 * file is a collection of data items stored on disk
@@ -306,68 +316,3 @@
 * what is script
     * a shell script is a file containing commands for the shell
     * different shells can interpret same text different ways
-
-## workshop
-
-### filesystem
-1. Create two files:
-   $ touch blah1
-   $ touch blah2
-1. Enter some data into them:
-   $ echo "Cat" > blah1
-   $ echo "Dog" > blah2
-1. And as expected:
-   $cat blah1; cat blah2
-   Cat
-   Dog
-1. Let's create hard and soft links:
-   $ ln blah1 blah1-hard
-   $ ln -s blah2 blah2-soft
-1. Let's see what just happened:
-   $ ls -l
-   blah1
-   blah1-hard
-   blah2
-   blah2-soft -> blah2
-1. Changing the name of blah1 does not matter:
-   $ mv blah1 blah1-new
-   $ cat blah1-hard
-   Cat
-1. blah1-hard points to the inode, the contents, of the file - that wasn't changed.
-   $ mv blah2 blah2-new
-   $ ls blah2-soft
-   blah2-soft
-   $ cat blah2-soft
-   cat: blah2-soft: No such file or directory
-1. Similarly, If blah1 is deleted, blah1-hard still holds the contents; if blah2 is deleted, blah2-soft is just a link to a non-existing file.
-
-### terminal
-* task1
-    * tty
-        * open two terminals
-        * type `tty` in each
-        * in terminal1
-            * cat < test.txt > /dev/pts/1 // address of terminal2
-        * in terminal2 - it should appear
-* task2
-    * analyze files/sample.log
-    * how many FATAL logs
-        * grep ERROR sample.log
-    * find if for any id there is more than one TRACE entry
-        * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print }'
-    * find row number for that id, that has more than one TRACE entry
-        * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print $2 }' | grep -f - -n sample.log
-
-### bash
-* create 100 dir with 100 files each and put needle.txt somewhere
-    * mkdir directory{1..100}
-        * verify count dir: find . -maxdepth 1 | wc -l
-    * touch directory{1..100}/file{1..100}.txt
-        * verify count dir: find . -mindepth 2 | wc -l
-    * create needle.txt somewhere in dirs
-        * touch directory$(shuf -i 1-100 -n 1)/needle.txt
-        * verify that exists find . -name needle.txt
-    * rm -r directory{1..100}
-* find that file and move to from its dir to parent dir (files)
-    * find . -type f -name "needle.txt" -exec mv {} . \;
-    * verify that it was moved find . -name needle.txt
