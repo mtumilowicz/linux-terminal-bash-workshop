@@ -312,6 +312,8 @@
     * sed is used to process and modify text, awk is used for analysis and reporting
 
 ## bash
+* https://bertvv.github.io/cheat-sheets/Bash.html
+* https://google.github.io/styleguide/shellguide.html
 * bash = most commonly used linux shell today
 * what is script
     * a shell script is a file containing commands for the shell
