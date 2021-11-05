@@ -3,8 +3,8 @@
 COUNT=3
 
 LOG_RESULT () {
-  local COMMAND_RESULT = $1
-  local COMMAND_DESCRIPTION = $2
+  local COMMAND_RESULT=$1
+  local COMMAND_DESCRIPTION=$2
   if [[ COMMAND_RESULT -eq 0 ]]
   then
     echo "Success when $COMMAND_DESCRIPTION"
@@ -15,44 +15,22 @@ LOG_RESULT () {
 
 echo "Create workspace"
 mkdir workspace
-if [[ $? -eq 0 ]]
-then
-  echo "Success when creating Workspace/"
-else
-  echo "Failure when creating Workspace/"
-fi
+LOG_RESULT $? "creating Workspace/"
 
 cd workspace
 
 echo "Creating $COUNT directories"
 mkdir directory{1..3}
-
-if [[ $? -eq 0 ]]
-then
-  echo "Success when creating directories"
-else
-  echo "Failure when creating directories"
-fi
-
+LOG_RESULT $? "creating directories"
 
 echo "Create $COUNT files per each directory"
 for DIR in */
 do
   touch "$DIR"/file{1..3}
-  if [[ $? -eq 0 ]]
-  then
-    echo "Success when creating files in directory $DIR"
-  else
-    echo "Failure when creating files in directories $DIR"
-  fi
+  LOG_RESULT $? "creating files in directory $DIR"
 done
 
-if [[ $? -eq 0 ]]
-then
-  echo "Success when creating files in directories"
-else
-  echo "Failure when creating files in directories"
-fi
+LOG_RESULT $? "creating files in directories"
 
 FILES_COUNT=$(find . -mindepth 2 | wc -l)
 echo "$(($FILES_COUNT))"
