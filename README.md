@@ -316,3 +316,6 @@
 * what is script
     * a shell script is a file containing commands for the shell
     * different shells can interpret same text different ways
+* `#!/bin/bash` // first line; use bash to interpret this file
+    * path to the bash shell: which bash
+    * # = sharp, ! = bang, #! = shebang
