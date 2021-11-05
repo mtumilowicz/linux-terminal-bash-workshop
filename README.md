@@ -19,6 +19,8 @@
     * https://stackoverflow.com/questions/5607542/why-does-find-exec-mv-target-not-work/5607677
     * https://www.microsoft.com/en-us/download/details.aspx?id=37003
     * https://unix.stackexchange.com/questions/85461/piping-search-term-not-filename-to-grep
+    * https://unix.stackexchange.com/questions/521775/how-to-debug-trace-bash-function
+
 
 ## preface
 * goals of this workshops
@@ -312,10 +314,8 @@
     * sed is used to process and modify text, awk is used for analysis and reporting
 
 ## bash
-* https://bertvv.github.io/cheat-sheets/Bash.html
-* https://google.github.io/styleguide/shellguide.html
-* https://unix.stackexchange.com/questions/521775/how-to-debug-trace-bash-function
-* help set
+* conventions
+    * https://google.github.io/styleguide/shellguide.html
 * bash = most commonly used linux shell today
 * what is script
     * a shell script is a file containing commands for the shell
@@ -323,3 +323,10 @@
 * `#!/bin/bash` // first line; use bash to interpret this file
     * path to the bash shell: which bash
     * # = sharp, ! = bang, #! = shebang
+* debugging
+    * add lines before section you want to debug
+        ```
+        set -x // print commands and their arguments as they are executed
+        set -v // print shell input lines as they are read
+        ```
+    * other flags: `help set`
