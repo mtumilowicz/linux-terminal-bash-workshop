@@ -75,6 +75,7 @@ mkdir workspace
 LOG_RESULT "creating Workspace/"
 
 cd workspace
+WORKSPACE_DIR=$(pwd)
 
 LOG "DEBUG" "Creating $DIR_COUNT directories"
 DO_N_TIMES $DIR_COUNT "CREATE_DIR directory"
@@ -86,7 +87,7 @@ do
   cd $DIR
   DO_N_TIMES $FILE_COUNT "CREATE_FILE file"
   LOG_RESULT "creating files in directory $DIR"
-  cd ..
+  cd $WORKSPACE_DIR
 done
 
 LOG_RESULT "creating files in directories"
