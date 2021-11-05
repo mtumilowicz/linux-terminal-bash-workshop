@@ -22,6 +22,7 @@
     * https://unix.stackexchange.com/questions/521775/how-to-debug-trace-bash-function
     * https://unix.stackexchange.com/questions/138463/do-parentheses-really-put-the-command-in-a-subshell
     * https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html
+    * https://sookocheff.com/post/bash/parsing-bash-script-arguments-with-shopts/
 
 ## preface
 * goals of this workshops
