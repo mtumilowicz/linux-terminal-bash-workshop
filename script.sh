@@ -13,10 +13,11 @@ cleanup() {
 
 trap cleanup 0 EXIT
 
+project_parent_dir=$(pwd)
+
 dir_count=3
 file_count=3
-project_parent_dir=$(pwd)
-needle_name=needle.txt
+needle_name=${1:-"needle.txt"}
 script_logging_level="debug"
 
 declare -A levels=([debug]=0 [error]=1)
@@ -99,9 +100,9 @@ verify_created_file_count
 
 log "debug" "hiding needle.txt file somewhere"
 random_dir=$(shuf --input-range 1-$dir_count --head-count 1)
-touch directory"$random_dir"/needle.txt
+touch directory"$random_dir"/$needle_name
 log_result "hiding needle"
 
 log "debug" "moving to the parent parent dir"
-find . -type f -name "needle.txt" -exec mv {} .. \;
+find . -type f -name $needle_name -exec mv {} .. \;
 log_result "moving needle to the workspace/"
