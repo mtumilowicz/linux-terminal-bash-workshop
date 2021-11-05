@@ -39,7 +39,7 @@ while getopts ":d:f:l:h" opt; do
       script_logging_level=$OPTARG
       ;;
     \? )
-      echo "Invalid option: $OPTARG" 1>&2
+      echo "use -h option for help"
       exit 1
       ;;
     : )
