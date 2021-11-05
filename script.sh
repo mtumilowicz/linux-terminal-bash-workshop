@@ -12,6 +12,27 @@ LOG_RESULT () {
   fi
 }
 
+CREATE_DIR() {
+  local PREFIX_NAME=$1
+  local SUFFIX_NAME=$2
+  mkdir $PREFIX_NAME$SUFFIX_NAME
+}
+
+CREATE_FILE() {
+  local PREFIX_NAME=$1
+  local SUFFIX_NAME=$2
+  touch $PREFIX_NAME$SUFFIX_NAME
+}
+
+DO_N_TIMES() {
+  local N=$1
+  local COMMAND=$2
+  for i in $(seq $N); do
+      $COMMAND $i
+      LOG_RESULT "running command: $COMMAND"
+  done
+}
+
 echo "Create workspace"
 mkdir workspace
 LOG_RESULT "creating Workspace/"
@@ -19,17 +40,20 @@ LOG_RESULT "creating Workspace/"
 cd workspace
 
 echo "Creating $COUNT directories"
-mkdir directory{1..3}
+DO_N_TIMES $COUNT "CREATE_DIR directory"
 LOG_RESULT "creating directories"
 
 echo "Create $COUNT files per each directory"
 for DIR in */
 do
-  touch "$DIR"/file{1..3}
+  cd $DIR
+  DO_N_TIMES $COUNT "CREATE_FILE file"
   LOG_RESULT "creating files in directory $DIR"
 done
 
 LOG_RESULT "creating files in directories"
+
+cd ..
 
 FILES_COUNT=$(find . -mindepth 2 | wc -l)
 echo "$(($FILES_COUNT))"
