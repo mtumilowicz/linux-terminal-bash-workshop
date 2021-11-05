@@ -1,4 +1,7 @@
 #!/bin/bash
+set -o errexit
+set -o pipefail
+set -o nounset
 
 DIR_COUNT=3
 FILE_COUNT=3
@@ -35,7 +38,7 @@ DO_N_TIMES() {
 }
 
 VERIFY_CREATED_FILE_COUNT() {
-  CREATED_FILE_COUNT=$(find . -type f | wc -l)
+  CREATED_FILE_COUNT=$(find . -type f | wc --lines)
   EXPECTED_CREATED_FILE_COUNT=$(($DIR_COUNT * FILE_COUNT))
   if [[ $CREATED_FILE_COUNT -eq EXPECTED_CREATED_FILE_COUNT ]]
   then
@@ -43,6 +46,11 @@ VERIFY_CREATED_FILE_COUNT() {
   else
     echo "Number of created files is incorrect: $CREATED_FILE_COUNT and should be: $EXPECTED_CREATED_FILE_COUNT"
   fi
+}
+
+CLEANUP() {
+  cd ..
+  rm -r workspace
 }
 
 echo "Create workspace"
@@ -69,7 +77,7 @@ LOG_RESULT "creating files in directories"
 VERIFY_CREATED_FILE_COUNT
 
 echo "Hiding needle.txt file somewhere"
-RANDOM_DIR=$(shuf -i 1-$DIR_COUNT -n 1)
+RANDOM_DIR=$(shuf --input-range 1-$DIR_COUNT --head-count 1)
 touch directory"$RANDOM_DIR"/needle.txt
 LOG_RESULT "hiding needle"
 
@@ -77,5 +85,4 @@ echo "Moving to the parent parent dir"
 find . -type f -name "needle.txt" -exec mv {} .. \;
 LOG_RESULT "moving needle to the Workspace/"
 
-cd ..
-rm -r workspace
+trap CLEANUP 0 EXIT
