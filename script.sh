@@ -3,17 +3,25 @@ set -o errexit
 set -o pipefail
 set -o nounset
 
-trap CLEANUP 0 EXIT
+cleanup() {
+  cd $project_parent_dir
+  if [[ -d workspace ]]
+  then
+    rm -r workspace
+  fi
+}
 
-DIR_COUNT=3
-FILE_COUNT=3
-PROJECT_PARENT_DIR=$(pwd)
-NEEDLE_NAME=needle.txt
-script_logging_level="DEBUG"
+trap cleanup 0 EXIT
 
-declare -A levels=([DEBUG]=0 [ERROR]=1)
+dir_count=3
+file_count=3
+project_parent_dir=$(pwd)
+needle_name=needle.txt
+script_logging_level="debug"
 
-LOG() {
+declare -A levels=([debug]=0 [error]=1)
+
+log() {
   local log_priority=$1
   local log_message=$2
 
@@ -23,82 +31,77 @@ LOG() {
   fi
 }
 
-LOG_RESULT () {
-  local COMMAND_DESCRIPTION=$1
+log_result () {
+  local command_description=$1
   if [[ $? -eq 0 ]]
   then
-    LOG "DEBUG" "Success when $COMMAND_DESCRIPTION"
+    log "debug" "success when $command_description"
   else
-    LOG "ERROR" "Failure when $COMMAND_DESCRIPTION"
+    log "error" "failure when $command_description"
   fi
 }
 
-CREATE_DIR() {
-  local PREFIX_NAME=$1
-  local SUFFIX_NAME=$2
-  mkdir $PREFIX_NAME$SUFFIX_NAME
+create_dir() {
+  local prefix_name=$1
+  local suffix_name=$2
+  mkdir $prefix_name$suffix_name
 }
 
-CREATE_FILE() {
-  local PREFIX_NAME=$1
-  local SUFFIX_NAME=$2
-  touch $PREFIX_NAME$SUFFIX_NAME
+create_file() {
+  local prefix_name=$1
+  local suffix_name=$2
+  touch $prefix_name$suffix_name
 }
 
-DO_N_TIMES() {
-  local N=$1
-  local COMMAND=$2
-  for i in $(seq $N); do
-      $COMMAND $i
-      LOG_RESULT "running command: $COMMAND $i"
+do_n_times() {
+  local n=$1
+  local command=$2
+  for i in $(seq $n); do
+      $command $i
+      log_result "running command: $command $i"
   done
 }
 
-VERIFY_CREATED_FILE_COUNT() {
-  CREATED_FILE_COUNT=$(find . -type f | wc --lines)
-  EXPECTED_CREATED_FILE_COUNT=$(($DIR_COUNT * FILE_COUNT))
-  if [[ $CREATED_FILE_COUNT -eq EXPECTED_CREATED_FILE_COUNT ]]
+verify_created_file_count() {
+  created_file_count=$(find . -type f | wc --lines)
+  expected_created_file_count=$(($dir_count * file_count))
+  if [[ $created_file_count -eq expected_created_file_count ]]
   then
-    LOG "DEBUG" "Number of created files is correct: $EXPECTED_CREATED_FILE_COUNT"
+    log "debug" "number of created files is correct: $expected_created_file_count"
   else
-    echo "ERROR" "Number of created files is incorrect: $CREATED_FILE_COUNT and should be: $EXPECTED_CREATED_FILE_COUNT"
+    echo "error" "number of created files is incorrect: $created_file_count and should be: $expected_created_file_count"
   fi
 }
 
-CLEANUP() {
-  cd $PROJECT_PARENT_DIR
-  rm -r workspace
-}
-
-LOG "DEBUG" "Create workspace"
+log "debug" "create workspace"
 mkdir workspace
-LOG_RESULT "creating Workspace/"
+log_result "creating workspace/"
 
 cd workspace
-WORKSPACE_DIR=$(pwd)
+workspace_dir=$(pwd)
 
-LOG "DEBUG" "Creating $DIR_COUNT directories"
-DO_N_TIMES $DIR_COUNT "CREATE_DIR directory"
-LOG_RESULT "creating directories"
+log "debug" "creating $dir_count directories"
+do_n_times $dir_count "create_dir directory"
+log_result "creating directories"
 
-LOG "DEBUG" "Create $FILE_COUNT files per each directory"
-for DIR in */
+log "debug" "create $file_count files per each directory"
+for dir in */
 do
-  cd $DIR
-  DO_N_TIMES $FILE_COUNT "CREATE_FILE file"
-  LOG_RESULT "creating files in directory $DIR"
-  cd $WORKSPACE_DIR
+  cd $dir
+  do_n_times $file_count "create_file file"
+  log_result "creating files in directory $dir"
+  cd $workspace_dir
 done
 
-LOG_RESULT "creating files in directories"
+log_result "creating files in directories"
 
-VERIFY_CREATED_FILE_COUNT
+verify_created_file_count
 
-LOG "DEBUG" "Hiding needle.txt file somewhere"
-RANDOM_DIR=$(shuf --input-range 1-$DIR_COUNT --head-count 1)
-touch directory"$RANDOM_DIR"/needle.txt
-LOG_RESULT "hiding needle"
+log "debug" "hiding needle.txt file somewhere"
+random_dir=$(shuf --input-range 1-$dir_count --head-count 1)
+touch directory"$random_dir"/needle.txt
+log_result "hiding needle"
 
-LOG "DEBUG" "Moving to the parent parent dir"
+log "debug" "moving to the parent parent dir"
 find . -type f -name "needle.txt" -exec mv {} .. \;
-LOG_RESULT "moving needle to the Workspace/"
+log_result "moving needle to the workspace/"
