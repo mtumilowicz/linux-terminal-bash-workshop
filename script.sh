@@ -30,8 +30,19 @@ DO_N_TIMES() {
   local COMMAND=$2
   for i in $(seq $N); do
       $COMMAND $i
-      LOG_RESULT "running command: $COMMAND"
+      LOG_RESULT "running command: $COMMAND $i"
   done
+}
+
+VERIFY_CREATED_FILE_COUNT() {
+  CREATED_FILE_COUNT=$(find . -type f | wc -l)
+  EXPECTED_CREATED_FILE_COUNT=$(($DIR_COUNT * FILE_COUNT))
+  if [[ $CREATED_FILE_COUNT -eq EXPECTED_CREATED_FILE_COUNT ]]
+  then
+    echo "Number of created files is correct: $EXPECTED_CREATED_FILE_COUNT"
+  else
+    echo "Number of created files is incorrect: $CREATED_FILE_COUNT and should be: $EXPECTED_CREATED_FILE_COUNT"
+  fi
 }
 
 echo "Create workspace"
@@ -50,23 +61,21 @@ do
   cd $DIR
   DO_N_TIMES $FILE_COUNT "CREATE_FILE file"
   LOG_RESULT "creating files in directory $DIR"
+  cd ..
 done
 
 LOG_RESULT "creating files in directories"
 
-cd ..
-
-FILES_COUNT=$(find . -mindepth 2 | wc -l)
-echo "$(($FILES_COUNT))"
+VERIFY_CREATED_FILE_COUNT
 
 echo "Hiding needle.txt file somewhere"
 RANDOM_DIR=$(shuf -i 1-$DIR_COUNT -n 1)
-touch touch directory"$RANDOM_DIR"/needle.txt
-echo "that's the needle" > needle.txt
-cat needle.txt
+touch directory"$RANDOM_DIR"/needle.txt
+LOG_RESULT "hiding needle"
 
 echo "Moving to the parent parent dir"
 find . -type f -name "needle.txt" -exec mv {} .. \;
+LOG_RESULT "moving needle to the Workspace/"
 
 cd ..
 rm -r workspace
