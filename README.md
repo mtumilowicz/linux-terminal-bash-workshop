@@ -20,7 +20,8 @@
     * https://www.microsoft.com/en-us/download/details.aspx?id=37003
     * https://unix.stackexchange.com/questions/85461/piping-search-term-not-filename-to-grep
     * https://unix.stackexchange.com/questions/521775/how-to-debug-trace-bash-function
-
+    * https://unix.stackexchange.com/questions/138463/do-parentheses-really-put-the-command-in-a-subshell
+    * https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html
 
 ## preface
 * goals of this workshops
@@ -323,6 +324,22 @@
 * `#!/bin/bash` // first line; use bash to interpret this file
     * path to the bash shell: which bash
     * # = sharp, ! = bang, #! = shebang
+* declaring variables
+* control structures
+* arguments
+    * $1 // without default
+    * ${1:-foo} // with default
+* options
+* intercepting output of commands
+    * `$(command)`
+    * called command substitution
+        * bash performs the expansion by executing command in a subshell environment
+        and replacing the command substitution with the standard output of the command
+    * subshell starts out as an almost identical copy of the original shell process
+        * under the hood, the shell calls the fork system call, which creates a new process
+        whose code and memory are copies
+        * in particular, they have the same variables
+        * subshell is thus different from executing a script
 * debugging
     * add lines before section you want to debug
         ```
@@ -330,3 +347,4 @@
         set -v // print shell input lines as they are read
         ```
     * other flags: `help set`
+* traps
