@@ -1,6 +1,7 @@
 #!/bin/bash
 
-COUNT=3
+DIR_COUNT=3
+FILE_COUNT=3
 
 LOG_RESULT () {
   local COMMAND_DESCRIPTION=$1
@@ -39,15 +40,15 @@ LOG_RESULT "creating Workspace/"
 
 cd workspace
 
-echo "Creating $COUNT directories"
-DO_N_TIMES $COUNT "CREATE_DIR directory"
+echo "Creating $DIR_COUNT directories"
+DO_N_TIMES $DIR_COUNT "CREATE_DIR directory"
 LOG_RESULT "creating directories"
 
-echo "Create $COUNT files per each directory"
+echo "Create $FILE_COUNT files per each directory"
 for DIR in */
 do
   cd $DIR
-  DO_N_TIMES $COUNT "CREATE_FILE file"
+  DO_N_TIMES $FILE_COUNT "CREATE_FILE file"
   LOG_RESULT "creating files in directory $DIR"
 done
 
@@ -59,7 +60,7 @@ FILES_COUNT=$(find . -mindepth 2 | wc -l)
 echo "$(($FILES_COUNT))"
 
 echo "Hiding needle.txt file somewhere"
-RANDOM_DIR=$(shuf -i 1-$COUNT -n 1)
+RANDOM_DIR=$(shuf -i 1-$DIR_COUNT -n 1)
 touch touch directory"$RANDOM_DIR"/needle.txt
 echo "that's the needle" > needle.txt
 cat needle.txt
