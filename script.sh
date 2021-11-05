@@ -7,7 +7,7 @@ cleanup() {
   cd $project_parent_dir
   if [[ -d workspace ]]
   then
-    rm -r workspace
+    rm --recursive workspace
   fi
 }
 
