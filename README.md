@@ -315,6 +315,7 @@
 * https://bertvv.github.io/cheat-sheets/Bash.html
 * https://google.github.io/styleguide/shellguide.html
 * https://unix.stackexchange.com/questions/521775/how-to-debug-trace-bash-function
+* help set
 * bash = most commonly used linux shell today
 * what is script
     * a shell script is a file containing commands for the shell
