@@ -331,6 +331,15 @@
     * $1 // without default
     * ${1:-foo} // with default
 * options
+    * if an invalid option is provided, the option variable is assigned the value `?`
+        * this behaviour is only true when you prepend the list of valid options with `:`
+        to disable the default error handling of invalid options
+        * it is recommended to always disable the default error handling in your scripts
+    * shift $((OPTIND -1))
+        * It is common practice to call the shift command at the end of your processing loop to remove options
+        that have already been handled from $@
+    * options that themselves have arguments are signified with a `:`
+        * if no argument is provided getopts will set opt to :
 * intercepting output of commands
     * `$(command)`
     * called command substitution
