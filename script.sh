@@ -17,8 +17,40 @@ project_parent_dir=$(pwd)
 
 dir_count=3
 file_count=3
-needle_name=${1:-"needle.txt"}
 script_logging_level="debug"
+
+while getopts ":d:f:l:h" opt; do
+  case ${opt} in
+    d )
+      dir_count=$OPTARG
+      ;;
+    f )
+      file_count=$OPTARG
+      ;;
+    h )
+      echo "Usage:"
+      echo "-h                      help"
+      echo "-f                      how many files to create per directory"
+      echo "-d                      how many directories to create"
+      echo "-l                      logging level: debug, error; by default is set debug"
+      exit 0
+      ;;
+    l )
+      script_logging_level=$OPTARG
+      ;;
+    \? )
+      echo "Invalid option: $OPTARG" 1>&2
+      exit 1
+      ;;
+    : )
+      echo "Invalid option: $OPTARG requires an argument" 1>&2
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND -1))
+
+needle_name=${1:-"needle.txt"}
 
 declare -A levels=([debug]=0 [error]=1)
 
