@@ -7,7 +7,7 @@ trap CLEANUP 0 EXIT
 
 DIR_COUNT=3
 FILE_COUNT=3
-PARENT_DIR=$(pwd)
+PROJECT_PARENT_DIR=$(pwd)
 NEEDLE_NAME=needle.txt
 script_logging_level="DEBUG"
 
@@ -66,7 +66,7 @@ VERIFY_CREATED_FILE_COUNT() {
 }
 
 CLEANUP() {
-  cd $PARENT_DIR
+  cd $PROJECT_PARENT_DIR
   rm -r workspace
 }
 
