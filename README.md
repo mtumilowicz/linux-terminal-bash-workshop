@@ -23,6 +23,7 @@
     * https://unix.stackexchange.com/questions/138463/do-parentheses-really-put-the-command-in-a-subshell
     * https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html
     * https://sookocheff.com/post/bash/parsing-bash-script-arguments-with-shopts/
+    * https://linuxize.com/
 
 ## preface
 * goals of this workshops
@@ -322,11 +323,60 @@
 * what is script
     * a shell script is a file containing commands for the shell
     * different shells can interpret same text different ways
-* `#!/bin/bash` // first line; use bash to interpret this file
-    * path to the bash shell: which bash
-    * # = sharp, ! = bang, #! = shebang
-* declaring variables
+* how should bash script begin
+    ```
+    `#!/bin/bash`
+
+    set -o errexit
+    set -o pipefail
+    set -o nounset
+    ```
+    * `#!/bin/bash`
+        * first line; means: use bash to interpret this file
+        * path to the bash shell
+            * to obtain that path type `which bash`
+        * # = sharp, ! = bang, #! = shebang
+    * `set -o errexit`
+        * exit immediately if a command exits with a non-zero status
+    * `set -o pipefail`
+        * return value is the status of the last command to exit with a non-zero status, or zero if no command
+        exited with a non-zero status
+    * `set -o nounset`
+        * treat unset variables as an error when substituting
+    * other flags: `help set`
+* declaring/calling structures
+    * variable: `str="Hello World!"`
+        * `echo ${STR}`
+    * function
+        ```
+        hello() {
+            local first_arg=$1 // access to first argument
+        }
+        ```
+        then calling: hello "arg"
 * control structures
+    * if
+        ```
+        if [[ condition ]] // ex. $NUM -gt 5
+        then
+          command // ex. echo "Hello word!"
+        fi
+        ```
+    * for
+        ```
+        for i in {0..3}
+        do
+          echo "Number: $i"
+        done
+        ```
+    * while
+        ```
+        while [ $i -le 2 ]
+        do
+          echo Number: $i
+          ((i++))
+        done
+        ```
 * arguments
     * $1 // without default
     * ${1:-foo} // with default
@@ -335,11 +385,36 @@
         * this behaviour is only true when you prepend the list of valid options with `:`
         to disable the default error handling of invalid options
         * it is recommended to always disable the default error handling in your scripts
-    * shift $((OPTIND -1))
-        * It is common practice to call the shift command at the end of your processing loop to remove options
+    * `shift $((OPTIND -1))`
+        * it is common practice to call the shift command at the end of your processing loop to remove options
         that have already been handled from $@
     * options that themselves have arguments are signified with a `:`
         * if no argument is provided getopts will set opt to :
+    * example
+        ```
+        while getopts ":d:h" opt; do
+          case ${opt} in
+            d )
+              dir_count=$OPTARG
+              ;;
+            h )
+              echo "Usage:"
+              echo "-h                      help"
+              echo "-d                      how many directories to create"
+              exit 0
+              ;;
+            \? )
+              echo "use -h option for help"
+              exit 1
+              ;;
+            : )
+              echo "Invalid option: $OPTARG requires an argument" 1>&2
+              exit 1
+              ;;
+          esac
+        done
+        shift $((OPTIND -1))
+        ```
 * intercepting output of commands
     * `$(command)`
     * called command substitution
@@ -356,5 +431,4 @@
         set -x // print commands and their arguments as they are executed
         set -v // print shell input lines as they are read
         ```
-    * other flags: `help set`
 * traps
