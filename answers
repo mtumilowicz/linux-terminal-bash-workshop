@@ -1,5 +1,5 @@
 ### filesystem
-1. filesystem task
+* task
     1. create two files:
         cat  file1
         touch file2
@@ -40,7 +40,7 @@
         cat: file3-soft: No such file or directory
 
 ### terminal
-1. redirect from terminal to terminal
+* task1
     1. open two terminals
         * ctrl alt t
     1. type `tty` in each
@@ -63,15 +63,6 @@
         * grep TRACE sample.log | awk '{print $NF}' | sort | uniq -c | sort -k1nr | awk '$1 > 1 { print $2 }' | grep -f - -n sample.log
 
 ### bash
-* create 100 dir with 100 files each and put needle.txt somewhere
-    * mkdir directory{1..100}
-        * verify count dir: find . -maxdepth 1 | wc -l
-    * touch directory{1..100}/file{1..100}.txt
-        * verify count dir: find . -mindepth 2 | wc -l
-    * create needle.txt somewhere in dirs
-        * touch directory$(shuf -i 1-100 -n 1)/needle.txt
-        * verify that exists find . -name needle.txt
-    * rm -r directory{1..100}
-* find that file and move to from its dir to parent dir (files)
-    * find . -type f -name "needle.txt" -exec mv {} . \;
-    * verify that it was moved find . -name needle.txt
+* task
+    1. create 100 dir with 100 files each and put needle.txt somewhere
+    1. find that file and move to the parent dir
