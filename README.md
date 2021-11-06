@@ -24,6 +24,7 @@
     * https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html
     * https://sookocheff.com/post/bash/parsing-bash-script-arguments-with-shopts/
     * https://linuxize.com/
+    * https://www.linuxjournal.com/content/bash-trap-command
 
 ## preface
 * goals of this workshops
@@ -432,3 +433,7 @@
         set -v // print shell input lines as they are read
         ```
 * traps
+    * allows you to catch signals and execute code when they occur
+        * signals are asynchronous notifications that are sent to your script when certain events occur
+    * bash provides a psuedo-signal called "EXIT", which is executed when your script exits
+        * this can be used to make sure that your script executes some cleanup on exit
