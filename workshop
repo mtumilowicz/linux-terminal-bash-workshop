@@ -1,0 +1,58 @@
+### filesystem
+* investigate differences hard-link vs sym-link
+    1. create two files:
+        cat  file1
+        touch file2
+    1. enter some data into them
+        echo "Cat" > file1
+        echo "Dog" > file2
+    1. verify the content of the files
+        cat file1; cat file2
+        Cat
+        Dog
+    1. create hard and soft links
+        ln file1 file1-hard
+        ln -s file2 file2-soft
+    1. verify they were created
+        ls -l
+        file1
+        file1-hard
+        file2
+        file2-soft -> file2
+    1. change the name of file1 and verify the hard link
+        mv file1 file1-new
+        cat file1-hard
+        Cat
+    1. change the name of file2 and verify the soft link
+        mv file2 file2-new
+        cat file2-soft
+        cat: file2-soft: No such file or directory
+    1. delete the file1-new and verify the hard link
+        rm file1-new
+        cat file1-hard
+        Cat
+    1. create file3 and soft link, then delete file3 and verify the soft link
+        cat > file3
+        ln -s file3 file3-soft
+        cat file3-soft
+        rm file3
+        cat file3-soft
+        cat: file3-soft: No such file or directory
+
+### terminal
+* task
+    * redirect output from one terminal to another
+    * hint: two terminals, tty, create test.txt, cat test.txt > /dev/pts/1
+* task2
+    * analyze files/sample.log
+    * how many FATAL logs
+        * hint: grep
+    * find if for any id there is more than one TRACE entry
+        * hint: grep, awk, sort, uniq
+    * find row number for ids, that has more than one TRACE entry
+        * hint: grep, awk, sort, uniq, grep -f -
+
+### bash
+* task
+    1. create 100 dir with 100 files each and put needle.txt somewhere
+    1. find that file and move to the parent dir
