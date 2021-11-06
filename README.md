@@ -154,151 +154,6 @@
     * standard input is connected by default to the keybord
 
 ### commands
-* history
-    * list history of commands
-    * then !1 - chose first and executes
-    * !! - most recent cmd
-    * !v latest cmd that starts with v
-    * !. latest cmd that start with .
-* cut
-    * used to extract sections from each line of input — usually from a file
-    * cut -d "." -f1 // delimited by . and only first column
-        * default delimiter is "TAB"
-        * split only by single character
-    * cut -d "." -f1-3 // delimited by . and range
-    * cut c5- file // since 5 to the end
-* cat
-    * name derived from its function to concatenate files
-    * view content
-        * cat file
-    * create new file with content
-        * cat > FileWithContent then enter then insert content ctr c
-    * copy content of 1 file to another
-        * cat file > file2
-        * cat file1 file2 > file3
-    * append data
-        * cat file1 >> file2
-* tee
-    * save a data snapshot without breaking pipeline
-        * redirection of stdout breaks pipeline
-    * find "4DOS" wikipedia.txt | tee 4DOS.txt | sort > 4DOSsorted.txt
-        * searches the file wikipedia.txt for any lines containing the string "4DOS"
-        * makes a copy of the matching lines in 4DOS.txt
-        * sorts the lines
-        * writes them to the output file 4DOSsorted.txt
-* touch filename
-    * create empty file
-* pwd
-    * writes the full pathname of the current working directory
-    * $oldpwd - prev directory
-    * ~+ for pwd
-    * ~- for oldpwd
-* ls
-    * list files or directories
-    * ls -F (shows differences between dirs and files)
-        * directories: Downloads/
-        * files: file.txt - without "/"
-    * ls -a
-        * plus hidden files / directories
-* cd
-    * change directory
-    * cd dirName
-    * cd
-        * return to home
-* file filename
-    * shows type of the file
-    * if you change the name of the file to xxx.jpg it still prints png
-        * in linux file extensions doesn't matter
-* wildcards
-  * `*`
-    * matches zero or more occurrences
-    * ls Documents/ Downloads/ Pictures/
-        * same as: ls Do* Pi* // assuming that there are only
-  * ?
-    * matches single occurrence
-    * ls file?.txt
-  * [123456]
-    * matches 1 place
-    * ls file[12345].txt
-* mkdir folder
-    * create folder
-    * mkdir -p /a/b/c
-        * create whole path even if dir doesn't exist
-        * mkdir a/b/c - error
-* rm
-    * remove file
-* rm -r
-    * remove directory
-    * rmdir - removes if empty
-* cp source target
-    * used for copying files and directories to another location
-    * cp a.txt b.txt
-    * cp -r source target
-        * for copying dirs
-* mv source target // for files and directories
-    * moves files or directories from one place to another
-    * mv foo.txt bar.txt
-        * rename foo.txt to bar.txt
-    * mv file1.txt file.2.txt file3.txt folder
-* locate *.log
-    * search for files
-        * doesn't read the file system for the searched file or directory name
-        * refers to a database (prepared by the command updatedb)
-    * very fast but requires updating
-        * updatedb
-            * sudo updatedb (to run as an root)
-        * sudo - super user do
-        * done automatically daily
-* find haystack/ -type f -name "needle.txt" -exec command {} \;
-    * used to find files and directories and perform subsequent operations on them
-    * for each result, command {} is executed
-        * all occurences of {} are replaced by the filename
-* less file
-    * displays the contents of a file or a command output, one page at a time
-* head/tail file
-    * display the beginning of a text file or piped data
-* sort words.txt
-    * sort -r words.txt // sort words.txt | tac
-    * sort -n numbers.txt // sort by number not lexicographical
-    * sort -u number.txt // unique
-    * sort -k 2 employee.txt
-    * sort -t : -k 2n employee.txt
-        * set delimiter to `:` // default is blank spaces
-* grep textToSearch file
-    * used for searching plain-text data sets for lines that match a regular expression
-    * grep -v textToSearch fileToSearchIn // line that does not have textToSearch
-    * grep -f - fileToSearchIn
-        * -f tells grep to obtain its search pattern from a file and - tells it that this file is actually stdin
-* tar
-    * create, extract, or list files from a tar file
-    * tar -cvf filename.tar file[1..3].txt
-        * c – create an archive file
-        * v – show the progress of the archive file
-        * f – filename of the archive file
-        * t – viewing the content of the archive file
-    * tar -xvf ourarchive.tar
-        * x - extract
-    * compression
-        * gzip
-            * gzip ourarchive.tar // compressed in place
-            * gunzip ourarchive.tar // uncompress in place
-            * tar -cvzf archive.tar.gz ... // z - gzip
-            * tar -xvzf archive.tar.gz // extract gzip
-* xargs
-    * converts input from standard input into arguments to a command
-    * cat file | xargs echo // vs echo file
-* sed 's/search-pattern/replacement-string/flags' file
-    * display and edit data
-    * edit
-        * sed 's/a/b/' 'a'
-          * result: 'b'
-        * doesn't modify the original file
-        * replace only first occurrence
-        * g flag
-            * replace all
-    * display
-        * sed -n '3p' file // 3rd row
-        * sed -n '2,4p' file // range of lines
 * awk
     * operations
         1. scans a file line by line
@@ -314,8 +169,153 @@
     * awk -F '.' '{print $1 "," $2}' file // separator
     * awk 'NR>=122 && NR<=129 { print }' // for row numbers
     * awk '$1>5 { print }' // filtering by column
-* sed vs awk
-    * sed is used to process and modify text, awk is used for analysis and reporting
+* cat
+    * name derived from its function to concatenate files
+    * view content
+        * cat file
+    * create new file with content
+        * cat > FileWithContent then enter then insert content ctr c
+    * copy content of 1 file to another
+        * cat file > file2
+        * cat file1 file2 > file3
+    * append data
+        * cat file1 >> file2
+* cd
+    * change directory
+    * cd dirName
+    * cd
+        * return to home
+* cp source target
+    * used for copying files and directories to another location
+    * cp a.txt b.txt
+    * cp -r source target
+        * for copying dirs
+* cut
+    * used to extract sections from each line of input — usually from a file
+    * cut -d "." -f1 // delimited by . and only first column
+        * default delimiter is "TAB"
+        * split only by single character
+    * cut -d "." -f1-3 // delimited by . and range
+    * cut c5- file // since 5 to the end
+* file filename
+    * shows type of the file
+    * if you change the name of the file to xxx.jpg it still prints png
+        * in linux file extensions doesn't matter
+* find haystack/ -type f -name "needle.txt" -exec command {} \;
+    * used to find files and directories and perform subsequent operations on them
+    * for each result, command {} is executed
+        * all occurences of {} are replaced by the filename
+* grep textToSearch file
+    * used for searching plain-text data sets for lines that match a regular expression
+    * grep -v textToSearch fileToSearchIn // line that does not have textToSearch
+    * grep -f - fileToSearchIn
+        * -f tells grep to obtain its search pattern from a file and - tells it that this file is actually stdin
+* less file
+    * displays the contents of a file or a command output, one page at a time
+* locate *.log
+    * search for files
+        * doesn't read the file system for the searched file or directory name
+        * refers to a database (prepared by the command updatedb)
+    * very fast but requires updating
+        * updatedb
+            * sudo updatedb (to run as an root)
+        * sudo - super user do
+        * done automatically daily
+* ls
+    * list files or directories
+    * ls -F (shows differences between dirs and files)
+        * directories: Downloads/
+        * files: file.txt - without "/"
+    * ls -a
+        * plus hidden files / directories
+* head/tail file
+    * display the beginning of a text file or piped data
+* history
+    * list history of commands
+    * then !1 - chose first and executes
+    * !! - most recent cmd
+    * !v latest cmd that starts with v
+    * !. latest cmd that start with .
+* mkdir folder
+    * create folder
+    * mkdir -p /a/b/c
+        * create whole path even if dir doesn't exist
+        * mkdir a/b/c - error
+* mv source target // for files and directories
+    * moves files or directories from one place to another
+    * mv foo.txt bar.txt
+        * rename foo.txt to bar.txt
+    * mv file1.txt file.2.txt file3.txt folder
+* pwd
+    * writes the full pathname of the current working directory
+    * $oldpwd - prev directory
+    * ~+ for pwd
+    * ~- for oldpwd
+* rm
+    * remove file
+* rm -r
+    * remove directory
+    * rmdir - removes if empty
+* sed 's/search-pattern/replacement-string/flags' file
+    * display and edit data
+    * edit
+        * sed 's/a/b/' 'a'
+          * result: 'b'
+        * doesn't modify the original file
+        * replace only first occurrence
+        * g flag
+            * replace all
+    * display
+        * sed -n '3p' file // 3rd row
+        * sed -n '2,4p' file // range of lines
+    * sed vs awk
+        * sed is used to process and modify text, awk is used for analysis and reporting
+* sort words.txt
+    * sort -r words.txt // sort words.txt | tac
+    * sort -n numbers.txt // sort by number not lexicographical
+    * sort -u number.txt // unique
+    * sort -k 2 employee.txt
+    * sort -t : -k 2n employee.txt
+        * set delimiter to `:` // default is blank spaces
+* tar
+    * create, extract, or list files from a tar file
+    * tar -cvf filename.tar file[1..3].txt
+        * c – create an archive file
+        * v – show the progress of the archive file
+        * f – filename of the archive file
+        * t – viewing the content of the archive file
+    * tar -xvf ourarchive.tar
+        * x - extract
+    * compression
+        * gzip
+            * gzip ourarchive.tar // compressed in place
+            * gunzip ourarchive.tar // uncompress in place
+            * tar -cvzf archive.tar.gz ... // z - gzip
+            * tar -xvzf archive.tar.gz // extract gzip
+* tee
+    * save a data snapshot without breaking pipeline
+        * redirection of stdout breaks pipeline
+    * find "4DOS" wikipedia.txt | tee 4DOS.txt | sort > 4DOSsorted.txt
+        * searches the file wikipedia.txt for any lines containing the string "4DOS"
+        * makes a copy of the matching lines in 4DOS.txt
+        * sorts the lines
+        * writes them to the output file 4DOSsorted.txt
+* touch filename
+    * create empty file
+* wildcards
+  * `*`
+    * matches zero or more occurrences
+    * ls Documents/ Downloads/ Pictures/
+        * same as: ls Do* Pi* // assuming that there are only
+  * ?
+    * matches single occurrence
+    * ls file?.txt
+  * [123456]
+    * matches 1 place
+    * ls file[12345].txt
+* xargs
+    * converts input from standard input into arguments to a command
+    * cat file | xargs echo // vs echo file
 
 ## bash
 * conventions
